@@ -4,10 +4,13 @@ import {
   HostListener,
   OnInit,
   computed,
+  signal,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import { bootstrapApplication } from '@angular/platform-browser';
 import 'zone.js';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -31,16 +34,32 @@ import 'zone.js';
     <form>
     Form valid: {{form.valid}}
     </form>
+
+    <p>
+    lastRecivedEventInfo: 
+    {{ message() | json }}
+    </p> 
   `,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
 })
 export class App implements OnInit {
   ngOnInit(): void {
     this.form.controls.field.setErrors({ someError: {} });
   }
   name = 'Angular';
+  message = signal({});
 
   form = new FormGroup({ field: new FormControl(0) });
+
+  constructor() {
+    this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe((status) => {
+      this.message.set({
+        statusRecived: status,
+        formValid: this.form.valid,
+        fieldErrors: this.form.controls.field.errors
+      })
+    })
+  }
 }
 
 bootstrapApplication(App);
