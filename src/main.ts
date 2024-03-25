@@ -18,10 +18,10 @@ import { JsonPipe } from '@angular/common';
   template: `
     <!-- does not work as formGroup directive present -->
 
-    <!-- <form [formGroup]="form">
+    <form [formGroup]="form">
     <input [formControl]="form.controls.field" />
     Form valid: {{form.valid}}
-    </form> -->
+    </form> 
 
     <!-- does not work as formControl directive present -->
 
@@ -31,9 +31,9 @@ import { JsonPipe } from '@angular/common';
     </form> -->
 
     <!-- works as no directives present -->
-    <form>
+    <!-- <form>
     Form valid: {{form.valid}}
-    </form>
+    </form> -->
 
     <p>
     lastRecivedEventInfo: 
