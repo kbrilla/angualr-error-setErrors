@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   HostBinding,
   HostListener,
@@ -20,7 +21,6 @@ import { JsonPipe } from '@angular/common';
 
     <form [formGroup]="form">
     <input [formControl]="form.controls.field" />
-    Form valid: {{form.valid}}
     </form> 
 
     <!-- does not work as formControl directive present -->
@@ -37,8 +37,16 @@ import { JsonPipe } from '@angular/common';
 
     <p>
     lastRecivedEventInfo: 
+    <br/>
     {{ message() | json }}
     </p> 
+    <p>
+    Form valid: {{form.valid}}
+    <br/>
+    Form status current: {{form.status}}
+    <br/>
+    Form status from last statusCahgne: {{message().statusRecived}}
+    </p>
   `,
   imports: [ReactiveFormsModule, JsonPipe],
 })
@@ -47,7 +55,7 @@ export class App implements OnInit {
     this.form.controls.field.setErrors({ someError: {} });
   }
   name = 'Angular';
-  message = signal({});
+  message = signal<any>({});
 
   form = new FormGroup({ field: new FormControl(0) });
 
