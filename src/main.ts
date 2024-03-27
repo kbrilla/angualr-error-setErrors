@@ -6,7 +6,7 @@ import {
   computed,
   signal,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import { bootstrapApplication } from '@angular/platform-browser';
 import 'zone.js';
@@ -49,7 +49,7 @@ export class App implements OnInit {
   name = 'Angular';
   message = signal({});
 
-  form = new FormGroup({ field: new FormControl(0) });
+  form = new FormGroup({ field: new FormControl(0,[Validators.required]) });
 
   constructor() {
     this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe((status) => {
